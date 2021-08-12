@@ -1,0 +1,39 @@
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">
+            <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">Blog do Wilson</font>
+            </font>
+        </h1>
+        <p class="col-md-8 fs-4">
+            <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">Usando uma série de utilitários, você pode criar este jumbotron,
+                    assim como o das versões anteriores do Bootstrap. </font>
+                <font style="vertical-align: inherit;">Confira os exemplos abaixo para saber como você pode remixar e
+                    remodelar de acordo com sua preferência.</font>
+            </font>
+        </p>
+        <button class="btn btn-primary btn-lg" type="button">
+            <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">Crie uma conta</font>
+            </font>
+        </button>
+    </div>
+</div>
+<hr>
+<h2>Postagens recentes:</h2>
+
+{{#each postagens}}
+<div class="card mt-4">
+    <div class="card-body">
+        <h3>{{titulo}}</h3>
+        <p>{{descricao}}</p>
+        <a href="/postagem/{{slug}}"><button class="btn btn-success">Leia mais</button></a>
+        <hr>
+        <small>Categoria: {{categoria.nome}}</small><br>
+        <small>Data da publicação: {{data}}</small>
+    </div>
+</div>
+{{else}}
+<h5>Nenhuma postagem</h5>
+{{/each}}
