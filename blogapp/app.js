@@ -13,6 +13,10 @@ require('./models/Postagem')
 const Postagem = mongoose.model('postagens')
 require('./models/Categoria')
 const Categoria = mongoose.model('categorias')
+const usuarios = require('./routes/usuario')
+const passport = require('passport')
+require('./config/auth')(passport)
+const db = require('./config/db')
 
 //Configurações
 //sessão
@@ -22,12 +26,18 @@ app.use(session({
     saveUninitialized: true
 }))
 
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(flash());
 
 //Middleware
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash("success_msg");
     res.locals.error_msg = req.flash("error_msg");
+    res.locals.error = req.flash('error');
+    res.locals.user = req.user || null;
+    res.locals.userName = req.user ? req.user.nome : null;
+    
     next();
 })
 
@@ -41,7 +51,7 @@ app.set('view engine', 'handlebars');
 
 //mongoose
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost/blogapp", {
+mongoose.connect(db.mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
@@ -120,14 +130,11 @@ app.get('/404', (req, res) => {
     res.send('Erro 404')
 })
 
-app.get('/posts', (req, res) => {
-    res.send('Lista Posts')
-})
-
-app.use('/admin', admin);
+app.use('/admin', admin)
+app.use('/usuarios', usuarios)
 
 //Outros
-const port = 8081
+const port = process.env.PORT || 8081
 app.listen(port, () => {
     console.log("Servidor rodando!");
 })
